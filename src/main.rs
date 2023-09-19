@@ -1,12 +1,17 @@
 use dotenv::dotenv;
 use std::env;
+use std::net::SocketAddr;
+use mc_serpent_server::network::server::MinecraftServer;
 
-fn main() {
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
     dotenv().ok();
 
-    let database_url = env::var("DATABASE_URL").expect("DATABASE_URL no está definida en el archivo .env");
-    let api_key = env::var("API_KEY").expect("API_KEY no está definida en el archivo .env");
-
-    println!("DATABASE_URL: {}", database_url);
-    println!("API_KEY: {}", api_key);
+    let port_str = env::var("PORT").expect("PORT no está definida en el archivo .env");
+    let port: u16 = port_str.parse().expect("No se pudo convertir PORT a u16");
+    println!("Server Running in PORT: {}", port);
+    let addr = SocketAddr::from(([127, 0, 0, 1], port));
+    let mut server = MinecraftServer::new(addr).await?;
+    server.start().await?;
+    Ok(())
 }
