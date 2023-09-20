@@ -9,7 +9,7 @@ pub async fn client_handler(mut stream: TcpStream) {
             let client_data = String::from_utf8_lossy(&buf[..n]);
             println!("Req: {}", client_data);
 
-            let response = format!("Eco: {}", client_data);
+            let response:String = format!("Eco: {}", client_data);
 
             if let Err(e) = stream.write_all(response.as_bytes()).await {
                 eprintln!("Error al escribir en el cliente: {}", e);

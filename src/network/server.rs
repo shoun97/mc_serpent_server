@@ -1,5 +1,5 @@
 use std::net::SocketAddr;
-use tokio::net::{TcpListener};
+use tokio::net::TcpListener;
 mod client_handler; 
 
 pub struct MinecraftServer {
@@ -8,7 +8,7 @@ pub struct MinecraftServer {
 
 impl MinecraftServer {
     pub async fn new(addr: SocketAddr) -> Result<Self, std::io::Error> {
-        let listener = TcpListener::bind(&addr).await?;
+        let listener: TcpListener = TcpListener::bind(&addr).await?;
         Ok(Self {listener})
     }
 
